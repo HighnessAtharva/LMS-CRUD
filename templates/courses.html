@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of Courses</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <button class="btn btn-primary">
+        <a href="/" style="color: white; text-decoration: none;">
+          <i class="fas fa-arrow-left"></i> Return
+        </a>
+      </button>
+      
+    <div class="container">
+        <h1>List of Courses</h1>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>CourseID</th>
+                    <th>CourseName</th>
+                    <th>CourseDescription</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                    <th>InstructorID</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td>{{ row.CourseID }}</td>
+                    <td>{{ row.CourseName }}</td>
+                    <td>{{ row.CourseDescription }}</td>
+                    <td>{{ row.StartDate }}</td>
+                    <td>{{ row.EndDate }}</td>
+                    <td>{{ row.InstructorID }}</td>
+                    <td><a href="/edit_course/{{ row.CourseID }}"><i class="fas fa-edit"></i></a></td>
+                    <td><a href="/delete_course/{{ row.CourseID }}"><i class="fas fa-trash"></i></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Include Bootstrap JavaScript (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
