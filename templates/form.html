@@ -38,8 +38,9 @@
                 <h2 class="text-center">Course Registration Form</h2>
                 <form action="/add_course" method="post">
                     <div class="mb-3">
-                        <label for="courseID" class="form-label">Course ID <b>(Primary Key)</b></label>
+                        <label for="courseID" class="form-label" >Course ID <b>(Primary Key)</b></label>
                         <input type="number" class="form-control" id="courseID" name="courseID" required>
+                        <div id="courseID-feedback"></div>
                     </div>
 
                     <div class="mb-3">
@@ -107,6 +108,27 @@
 
         <!-- Add Bootstrap JS CDN if needed -->
         <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script> -->
+        <script>
+            // Add an event listener to courseID input
+            const courseIDInput = document.getElementById('courseID');
+            courseIDInput.addEventListener('input', function () {
+                const courseID = courseIDInput.value;
+        
+                // Make an Ajax request to validate courseID
+                fetch(`/validate_course_id?courseID=${courseID}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const feedbackElement = document.getElementById('courseID-feedback');
+                        if (data.valid) {
+                            feedbackElement.innerHTML = "Course ID is valid.";
+                            feedbackElement.style.color = "green";
+                        } else {
+                            feedbackElement.innerHTML = "Course ID is invalid or already exists.";
+                            feedbackElement.style.color = "red";
+                        }
+                    });
+            });
+        </script>
 </body>
 
 </html>

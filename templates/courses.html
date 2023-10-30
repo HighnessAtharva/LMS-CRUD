@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>List of Courses</title>
     <!-- Include Bootstrap CSS -->
@@ -7,13 +8,37 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
+
 <body>
+    <!-- Add this modal to your HTML template -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
+        aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this course?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <a id="deleteCourseLink" class="btn btn-danger" href="">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <button class="btn btn-primary">
         <a href="/" style="color: white; text-decoration: none;">
-          <i class="fas fa-arrow-left"></i> Return
+            <i class="fas fa-arrow-left"></i> Return
         </a>
-      </button>
-      
+    </button>
+
     <div class="container">
         <h1>List of Courses</h1>
         <table class="table table-striped table-bordered">
@@ -39,15 +64,50 @@
                     <td>{{ row.EndDate }}</td>
                     <td>{{ row.InstructorID }}</td>
                     <td><a href="/edit_course/{{ row.CourseID }}"><i class="fas fa-edit"></i></a></td>
-                    <td><a href="/delete_course/{{ row.CourseID }}"><i class="fas fa-trash"></i></a></td>
+                    <td><a href="#" data-toggle="modal" data-target="#deleteCourseModal"
+                            data-courseid="{{ row.CourseID }}">
+                            <i class="fas fa-trash"></i>
+                        </a></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <!-- Bootstrap Modal -->
+        <div class="modal fade" id="deleteCourseModal" tabindex="-1" role="dialog"
+            aria-labelledby="deleteCourseModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteCourseModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this course?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <a href="#" id="confirmDeleteButton" class="btn btn-danger">Confirm Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Include Bootstrap JavaScript (optional) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // JavaScript to handle the confirmation
+        $('#deleteCourseModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var courseID = button.data('courseid');
+            var confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            confirmDeleteButton.setAttribute('href', '/delete_course/' + courseID);
+        });
+    </script>
 </body>
+
 </html>

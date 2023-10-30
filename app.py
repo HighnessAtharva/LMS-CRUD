@@ -1,5 +1,5 @@
 import pymysql
-from flask import Flask, flash, render_template, request, redirect, url_for
+from flask import Flask, flash, render_template, request, redirect, url_for, jsonify
 from db import mysql
 from time import sleep
 app = Flask(__name__)
@@ -57,6 +57,17 @@ def add_course():
     flash(f"Course {courseName} Added")
     return redirect("/")
 
+@app.route("/validate_course_id", methods=["GET"])
+def validate_course_id():
+    courseID = request.args.get("courseID")
+
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    # Check if the courseID already exists
+    cursor.execute(f"SELECT CourseID FROM Course WHERE CourseID = {courseID};")
+    valid = not cursor.fetchone()
+    return jsonify({"valid": valid})
 
 @app.route("/search_course", methods=["POST"])
 def search_course():
